@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess_Layer;
+﻿using DataAccess_Layer;
 using Restaurant;
+using System;
+using System.Collections.Generic;
 namespace BusinessLogic_Layer
 {
     public class DishesService
@@ -19,7 +16,7 @@ namespace BusinessLogic_Layer
         public List<Dish> FindAllDishesByNames(ref string[] dishesNames)
         {
             List<Dish> specifiedDishes = new List<Dish>();
-            foreach(var name in dishesNames)
+            foreach (var name in dishesNames)
             {
                 specifiedDishes.Add(Dishes.Find((x) => x.DishName == name));
             }
@@ -33,11 +30,11 @@ namespace BusinessLogic_Layer
         }
         public bool IsIngredientUsed(string ingredient)
         {
-           Dish dish = Dishes.Find((x) => x.Ingredients.Contains(ingredient));
-           if (dish == null)
-           {
+            Dish dish = Dishes.Find((x) => x.Ingredients.Contains(ingredient));
+            if (dish == null)
+            {
                 return false;
-           }
+            }
             return true;
         }
         public void AddDish(Dish dish)
@@ -159,9 +156,5 @@ namespace BusinessLogic_Layer
         {
             DishesDB.Update(Dishes);
         }
-/*        ~DishesService()
-        {
-            Update();
-        }*/
     }
 }

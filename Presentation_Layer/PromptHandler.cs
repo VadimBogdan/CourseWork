@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Restaurant;
 
 namespace Presentation_Layer
 {
@@ -23,7 +22,7 @@ namespace Presentation_Layer
         }
         private CommandActivity ActivityCase(int answer)
         {
-            switch(answer)
+            switch (answer)
             {
                 case 1:
                     {
@@ -144,7 +143,7 @@ namespace Presentation_Layer
         {
             int answer;
             Console.WriteLine("1. Додати нову страву" +
-                            "\n2. Видалити страву" + 
+                            "\n2. Видалити страву" +
                             "\n3. Змінити назву страви" +
                             "\n4. Переглянути назви страв" +
                             "\n5. Додати інгредієнт" +

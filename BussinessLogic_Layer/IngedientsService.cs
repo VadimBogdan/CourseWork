@@ -1,9 +1,6 @@
-﻿using System;
+﻿using DataAccess_Layer;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess_Layer;
 namespace BusinessLogic_Layer
 {
     public class IngedientsService
@@ -18,11 +15,11 @@ namespace BusinessLogic_Layer
         public string[] FindAllIngredientsByKeys(ref string[] keys)
         {
             string[] values = new string[keys.Length];
-            for(int i = 0; i < keys.Length; i++)
+            for (int i = 0; i < keys.Length; i++)
             {
                 Ingredients.TryGetValue(keys[i], out values[i]);
             }
-            return values;    
+            return values;
         }
         public void AddIngredient(string ingredientName, string[] keyWords)
         {
@@ -37,7 +34,7 @@ namespace BusinessLogic_Layer
                     throw new ArgumentException("Помилка у назві ключа інгредієнта.");
                 }
             }
-            foreach(string key in keyWords)
+            foreach (string key in keyWords)
             {
                 if (string.IsNullOrWhiteSpace(key))
                 {
@@ -99,9 +96,5 @@ namespace BusinessLogic_Layer
         {
             IngredientsDB.Update(Ingredients);
         }
-/*        ~IngedientsService()
-        {
-            Update();
-        }*/
     }
 }

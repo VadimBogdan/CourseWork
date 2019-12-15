@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DataAccess_Layer;
+﻿using DataAccess_Layer;
 using Restaurant;
+using System;
+using System.Collections.Generic;
 namespace BusinessLogic_Layer
 {
     public class OrdersService
@@ -64,7 +64,7 @@ namespace BusinessLogic_Layer
             Orders[index].setTableNumber(newTableNumber);
         }
         public void RemoveOrderDish(int orderId, Dish dish)
-        {    
+        {
             if (dish == null)
             {
                 throw new ArgumentNullException("Поcилання на null.");
@@ -99,9 +99,5 @@ namespace BusinessLogic_Layer
         {
             OrdersDB.Update(Orders);
         }
-/*        ~OrdersService()
-        {
-            Update();
-        }*/
     }
 }

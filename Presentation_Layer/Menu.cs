@@ -1,19 +1,19 @@
-﻿using System;
+﻿using BusinessLogic_Layer;
+using Restaurant;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic_Layer;
-using Restaurant;
 
 namespace Presentation_Layer
 {
     public enum CommandAppOut { Exit, ChangeRestaurant }
     public enum CommandAppIn { Add, Remove, Find, ChangeRestaurant, Exit, Continue }
     public enum CommandActivity { Ingredients, Dishes, Orders, Exit }
-    public enum CommandActivityTask { Add, Remove, Change, DisplayExact, RemoveIngredient, 
-        AddIngredient, ChangePrice, ChangeTime, DisplayAll,  
+    public enum CommandActivityTask
+    {
+        Add, Remove, Change, DisplayExact, RemoveIngredient,
+        AddIngredient, ChangePrice, ChangeTime, DisplayAll,
     }
     public class Menu
     {
@@ -26,7 +26,7 @@ namespace Presentation_Layer
             Console.OutputEncoding = Encoding.Unicode;
             Console.InputEncoding = Encoding.Unicode;
 
-           CommandAppOut commandApp;
+            CommandAppOut commandApp;
             do
             {
                 string[] applicationFileNames = new string[3];
@@ -48,15 +48,16 @@ namespace Presentation_Layer
         {
             try
             {
-                InitializeComponents(ref appFileNames);  
-            } catch(Exception e)
+                InitializeComponents(ref appFileNames);
+            }
+            catch (Exception e)
             {
                 throw e;
             }
             SendProgressOrSuccessMessage("Успішне підключення до Бази Даних!");
             CommandAppIn answer = CommandAppIn.Continue;
             do
-            {          
+            {
                 try
                 {
                     CommandActivity activity = Prompt.UserActivitySelect();
@@ -66,14 +67,14 @@ namespace Presentation_Layer
                     {
                         case CommandActivity.Exit:
                             {
-                                    answer = CommandAppIn.Exit;
-                                    break;
+                                answer = CommandAppIn.Exit;
+                                break;
                             }
                         case CommandActivity.Ingredients:
                             {
                                 task = Prompt.IngredientsActivity();
                                 Console.WriteLine();
-                                switch(task)
+                                switch (task)
                                 {
                                     case CommandActivityTask.Add:
                                         {
@@ -216,7 +217,7 @@ namespace Presentation_Layer
                                             int tableNumber;
                                             Prompt.NewOrder(out dishNames, out tableNumber);
                                             dishes = DishesService.FindAllDishesByNames(ref dishNames);
-                                            OrdersService.AddOrder(new Order (dishes, tableNumber));
+                                            OrdersService.AddOrder(new Order(dishes, tableNumber));
                                             DishesService.Update();
                                             break;
                                         }
@@ -297,7 +298,7 @@ namespace Presentation_Layer
             {
                 return CommandAppOut.ChangeRestaurant;
             }
-            return CommandAppOut.Exit;          
+            return CommandAppOut.Exit;
         }
         private void InitializeComponents(ref string[] appFileNames)
         {
@@ -322,14 +323,15 @@ namespace Presentation_Layer
                 {
                     Console.WriteLine($"{counter}. {val}");
                 }
-            } else if (what == "dishes")
+            }
+            else if (what == "dishes")
             {
                 Console.WriteLine("Доступні страви:");
                 foreach (var val in DishesService.GetListOfDishes())
                 {
                     Console.WriteLine($"{counter}. {val.DishName} - {val.DishPrice} грн.");
                 }
-            } 
+            }
         }
         private void SendProgressOrSuccessMessage(string msg)
         {

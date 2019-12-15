@@ -47,7 +47,7 @@ namespace Restaurant
         private double CalculatePrice()
         {
             double totalPrice = 0;
-            foreach(Dish dish in Dishes)
+            foreach (Dish dish in Dishes)
             {
                 totalPrice += dish.DishPrice;
             }

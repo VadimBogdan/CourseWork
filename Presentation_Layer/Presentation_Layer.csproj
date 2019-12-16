@@ -50,10 +50,6 @@
       <Project>{dd6b6394-1387-4a46-97be-d75e937e5bde}</Project>
       <Name>BusinessLogic_Layer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dish\Restaurant.csproj">
-      <Project>{65ebd732-c22c-4f2b-914a-5b3cc4e1c58d}</Project>
-      <Name>Restaurant</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

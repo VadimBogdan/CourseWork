@@ -1,47 +1,38 @@
 ﻿using DataAccess_Layer;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 namespace BusinessLogic_Layer
 {
     public class IngedientsService
     {
-        private Dictionary<string, string> Ingredients { get; set; }
+        private List<string> Ingredients { get; set; }
         private IngredientsDB IngredientsDB { get; set; }
         public IngedientsService(string DbfileName)
         {
             IngredientsDB = new IngredientsDB(DbfileName);
             Ingredients = IngredientsDB.Select();
         }
-        public string[] FindAllIngredientsByKeys(ref string[] keys)
+        public List<string> FindAllIngredientsByKeys(string[] keys)
         {
-            string[] values = new string[keys.Length];
-            for (int i = 0; i < keys.Length; i++)
-            {
-                Ingredients.TryGetValue(keys[i], out values[i]);
-            }
+            List<string> values = Ingredients.Where((ingrName) => keys.Where(
+                (key) => ingrName.ToLower().Contains(key) || ingrName.Contains(key))
+            .Any())
+                .ToList();
+            
             return values;
         }
-        public void AddIngredient(string ingredientName, string[] keyWords)
+        public void AddIngredient(string ingredientName)
         {
             if (string.IsNullOrWhiteSpace(ingredientName))
             {
                 throw new ArgumentException("Помилка у назві інгредієнта.");
             }
-            if (keyWords.Length == 1)
+            if (Ingredients.Contains(ingredientName))
             {
-                if (string.IsNullOrWhiteSpace(keyWords[0]))
-                {
-                    throw new ArgumentException("Помилка у назві ключа інгредієнта.");
-                }
+                throw new ArgumentException("Такий інгредієнт вже існує");
             }
-            foreach (string key in keyWords)
-            {
-                if (string.IsNullOrWhiteSpace(key))
-                {
-                    continue;
-                }
-                Ingredients.Add(key, ingredientName);
-            }
+            Ingredients.Add(ingredientName);
         }
         public void RemoveIngredient(string ingredientName)
         {
@@ -49,16 +40,16 @@ namespace BusinessLogic_Layer
             {
                 throw new ArgumentException("Помилка у назві інгредієнта.");
             }
-
-            List<string> removingKeyValues = Mapping(ingredientName); // пари ключ-значення, що видаляються
-            if (removingKeyValues.Count == 0)
+            int index = Ingredients.FindIndex((str) => str == ingredientName);
+            if (index < 0)
             {
                 throw new ArgumentException("Інгредіанта з такою назвою не має у базі.");
             }
-            foreach (string key in removingKeyValues)
+            else
             {
-                Ingredients.Remove(key);
+                Ingredients.Remove(ingredientName);
             }
+       
         }
         public void ChangeIngredient(string oldName, string newName)
         {
@@ -66,29 +57,22 @@ namespace BusinessLogic_Layer
             {
                 throw new ArgumentException("Помилка у назві інгредієнта.");
             }
-            List<string> changingValuesKeys = Mapping(oldName); // ключі змінюваного значення
-            if (changingValuesKeys.Count == 0)
+            // List<string> changingValuesKeys = Mapping(oldName); // ключі змінюваного значення
+            int index = Ingredients.FindIndex((str) => str == oldName);
+            if (index < 0)
             {
                 throw new ArgumentException("Спроба змінити неіснуючий інгредієнт.");
             }
-            foreach (string key in changingValuesKeys)
+            else
             {
-                Ingredients[key] = newName;
+                Ingredients[index] = newName;
             }
         }
-        public List<string> Mapping(string ingredientName)
+        public bool ContainsIngredient(string item)
         {
-            List<string> allKeys = new List<string>();
-            foreach (var keyValue in Ingredients)
-            {
-                if (keyValue.Value == ingredientName)
-                {
-                    allKeys.Add(keyValue.Key);
-                }
-            }
-            return allKeys;
+            return Ingredients.Contains(item);
         }
-        public IDictionary<string, string> GetKeyValuePairs()
+        public IList<string> GetIngredientList()
         {
             return Ingredients;
         }

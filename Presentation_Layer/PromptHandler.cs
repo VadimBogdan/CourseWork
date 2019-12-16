@@ -185,11 +185,9 @@ namespace Presentation_Layer
             appFileNames[1] = resturantName + "__dishes";
             appFileNames[2] = resturantName + "__orders";
         }
-        public void NewIngredient(out string[] keys, out string name)
+        public void NewIngredient(out string name)
         {
             GetIngredientName(out name);
-            Console.WriteLine("\nВведіть ключові слова інгредієнта через кому:");
-            keys = Console.ReadLine().Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
         }
         public void GetIngredientName(out string name)
         {
@@ -202,8 +200,13 @@ namespace Presentation_Layer
         }
         public void NewDish(out string[] keys, out string dishName, out double price, out int time)
         {
-            Console.WriteLine("\nВведіть ключові інгредієнтів через кому:");
-            keys = Console.ReadLine().Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine("\nВведіть назви або ключ. слова інгредієнтів в один рядок");
+            var matches = Regex.Matches(Console.ReadLine(), @"(?=(,|\s)?)([А-ЯІЇ]|[а-яії])+");
+            keys = new string[matches.Count];
+            for(int i = 0; i < matches.Count; i++)
+            {
+                keys[i] = matches[i].Value;
+            }
             GetDishName(out dishName);
             GetDishPrice(out price);
             GetDishCookTime(out time);

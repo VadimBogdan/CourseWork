@@ -78,10 +78,9 @@ namespace Presentation_Layer
                                 {
                                     case CommandActivityTask.Add:
                                         {
-                                            string[] keys;
                                             string name;
-                                            Prompt.NewIngredient(out keys, out name);
-                                            IngedientsService.AddIngredient(name, keys);
+                                            Prompt.NewIngredient(out name);
+                                            IngedientsService.AddIngredient(name);
                                             IngedientsService.Update();
                                             break;
                                         }
@@ -124,13 +123,13 @@ namespace Presentation_Layer
                                     case CommandActivityTask.Add:
                                         {
                                             string[] keys;
-                                            string[] ingredients;
+                                            List<string> ingredients;
                                             int dishCookTimeInMinutes;
                                             double dishPrice;
                                             string dishName;
                                             Prompt.NewDish(out keys, out dishName, out dishPrice, out dishCookTimeInMinutes);
-                                            ingredients = IngedientsService.FindAllIngredientsByKeys(ref keys);
-                                            DishesService.AddDish(new Dish(ingredients, dishName, dishPrice, dishCookTimeInMinutes));
+                                            ingredients = IngedientsService.FindAllIngredientsByKeys(keys);
+                                            DishesService.AddDish(new Dish(ingredients.ToArray(), dishName, dishPrice, dishCookTimeInMinutes));
                                             DishesService.Update();
                                             break;
                                         }
@@ -319,10 +318,12 @@ namespace Presentation_Layer
             if (what == "ingredients")
             {
                 Console.WriteLine("Доступні інгредієнти:");
-                foreach (var val in IngedientsService.GetKeyValuePairs().Distinct())
+                foreach (var val in IngedientsService.GetIngredientList())
                 {
                     Console.WriteLine($"{counter}. {val}");
+                    counter++;
                 }
+
             }
             else if (what == "dishes")
             {
@@ -330,6 +331,7 @@ namespace Presentation_Layer
                 foreach (var val in DishesService.GetListOfDishes())
                 {
                     Console.WriteLine($"{counter}. {val.DishName} - {val.DishPrice} грн.");
+                    counter++;
                 }
             }
         }

@@ -17,13 +17,13 @@ namespace BusinessLogic_Layer_Tests.IngredientsSerivce_Tests
             string ingredientName2 = "Onion";
 
             // act
-            IngedientsService.AddIngredient(ingredientName1, new string[] { ingredientKey1 });
+            IngedientsService.AddIngredient(ingredientName1);
             IngedientsService.ChangeIngredient(ingredientName1, ingredientName2);
 
             // assert
-            string res = "";
-            IngedientsService.GetKeyValuePairs().TryGetValue("oni", out res);
-            Assert.AreNotEqual(ingredientName1, res);
+            bool res = IngedientsService.ContainsIngredient(ingredientKey1);
+
+            Assert.IsFalse(res);
         }
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
